@@ -24,6 +24,7 @@ URL:		http://aufs.sourceforge.net/
 %{?with_dist_kernel:BuildRequires:	kernel%{_alt_kernel}-module-build >= 3:2.6.14}
 BuildRequires:	rpmbuild(macros) >= 1.330
 %endif
+BuildRequires:	sed >= 4.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -79,17 +80,20 @@ Ten pakiet zawiera moduł jądra Linuksa SMP.
 
 %prep
 %setup -qn %{name}
+sed 's/$(CONFIG_AUFS)/m/; %{!?debug:s/$(CONFIG_AUFS_DEBUG.*)/n/}; s/$(CONFIG_AUFS_HINOTIFY)/n/' -i fs/aufs/Makefile
+cp -a include/linux fs/aufs
 
 %build
 %if %{with kernel}
-%build_kernel_modules -m aufs
+%build_kernel_modules -C fs/aufs -m aufs \
+	EXTRA_CFLAGS="-DCONFIG_AUFS_BRANCH_MAX_CHAR -DCONFIG_AUFS_FAKE_DM -DCONFIG_AUFS_MODULE -UCONFIG_AUFS_KSIZE_PATCH %{?debug:-DCONFIG_AUFS_DEBUG}"
 %endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
 %if %{with kernel}
-%install_kernel_modules -m aufs -d fs
+%install_kernel_modules -m fs/aufs/aufs -d fs
 %endif
 
 %clean
