@@ -1,3 +1,4 @@
+#
 # Conditional build:
 %bcond_without	dist_kernel	# allow non-distribution kernel
 %bcond_without	kernel		# don't build kernel modules
@@ -12,6 +13,7 @@
 
 %define		_rel	0.1
 Summary:	Aufs - Another Unionfs
+Summary(pl.UTF-8):	aufs (Another Unionfs) - inny unionfs
 Name:		aufs
 Version:	0
 Release:	%{_rel}
@@ -35,6 +37,15 @@ keeping the basic features. Unionfs is being developed by Professor
 Erez Zadok at Stony Brook University and his team. If you don't know
 Unionfs, I recommend you to try and know it before using aufs. Some
 terminology in aufs follows Unionfs's.
+
+%description -l pl.UTF-8
+Początkowo aufs był całkowicie przeprojektowanym i od nowa
+zaimplementowanym unionfs-em. Po wielu oryginalnych pomysłach,
+podejściach, poprawkach i implementacjach stał sie całkowicie innym
+niż unionfs zachowując podstawowe możliwości. unionfs jest rozwijany
+przez profesora Ereza Zadoka w Stony Brook University i jego zespół.
+Nie znający unionfs-a powinni spróbować go i poznać przed używaniem
+aufs-a. Część terminologii wywodzi się z unionfs-a.
 
 %package -n kernel%{_alt_kernel}-fs-aufs
 Summary:	Linux driver for aufs
