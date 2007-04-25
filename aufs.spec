@@ -19,7 +19,7 @@ Version:	0
 Release:	%{_rel}
 License:	GPL v2
 Group:		Base/Kernel
-Source0:	http://www.pers.pl/%{name}-%{_cvsdate}.tar.bz2
+Source0:	%{name}-%{_cvsdate}.tar.bz2
 # Source0-md5:	526264eaac467144032e66a680fa03bf
 Patch0:		%{name}-vserver.patch
 URL:		http://aufs.sourceforge.net/
