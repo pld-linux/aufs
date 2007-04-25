@@ -1,0 +1,30 @@
+diff -Nur aufs.orig/fs/aufs/vfsub.h aufs.chng/fs/aufs/vfsub.h
+--- aufs.orig/fs/aufs/vfsub.h	2007-04-23 02:59:51.000000000 +0200
++++ aufs.chng/fs/aufs/vfsub.h	2007-04-25 12:25:37.000000000 +0200
+@@ -24,6 +24,8 @@
+ #include <linux/fs.h>
+ #include <asm/uaccess.h>
+ 
++#include "vserver.h"
++
+ #ifdef __KERNEL__
+ #include "wkq.h"
+ 
+diff -Nur aufs.orig/fs/aufs/vserver.h aufs.chng/fs/aufs/vserver.h
+--- aufs.orig/fs/aufs/vserver.h	1970-01-01 01:00:00.000000000 +0100
++++ aufs.chng/fs/aufs/vserver.h	2007-04-25 12:25:53.000000000 +0200
+@@ -0,0 +1,14 @@
++#ifndef __VSERVER_H
++#define __VSERVER_H
++
++#ifdef VSERVER
++
++#define vfs_symlink(dir, dentry, symname, mode) vfs_symlink(dir, dentry, symname, mode, NULL)
++#define vfs_mknod(dir, dentry, mode, dev) vfs_mknod(dir, dentry, mode, dev, NULL)
++#define vfs_link(src_dentry, dir, dentry) vfs_link(src_dentry, dir, dentry, NULL)
++#define vfs_mkdir(dir, dentry, mode) vfs_mkdir(dir, dentry, mode, NULL)
++#define vfs_rmdir(dir, dentry) vfs_rmdir(dir, dentry, NULL)
++#define vfs_unlink(dir, dentry) vfs_unlink(dir, dentry, NULL)
++#endif
++
++#endif
