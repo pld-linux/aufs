@@ -4,7 +4,7 @@
 %bcond_without	kernel		# don't build kernel modules
 %bcond_without	userspace	# don't build userspace programs
 %bcond_with	verbose		# verbose build (V=1)
-%bcond_without	vserver		# kernel build --without vserver & grsecurity
+%bcond_without	vserver		# kernel build without vserver & grsecurity
 
 %if %{without kernel}
 %undefine	with_dist_kernel
@@ -102,7 +102,7 @@ cp -a include/linux fs/aufs
 rm -rf $RPM_BUILD_ROOT
 
 %if %{with kernel}
-%install_kernel_modules -m fs/aufs/aufs -d fs
+%install_kernel_modules -m fs/aufs/aufs -d kernel/fs/aufs
 %endif
 
 %clean
@@ -117,7 +117,8 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with kernel}
 %files -n kernel%{_alt_kernel}-fs-aufs
 %defattr(644,root,root,755)
-/lib/modules/%{_kernel_ver}/fs/*.ko*
+%dir /lib/modules/%{_kernel_ver}/kernel/fs/aufs
+/lib/modules/%{_kernel_ver}/kernel/fs/aufs/*.ko*
 %endif
 
 %if %{with userspace}
