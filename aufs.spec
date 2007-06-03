@@ -10,7 +10,7 @@
 %undefine	with_dist_kernel
 %endif
 
-%define		_cvsdate	20070424
+%define		_cvsdate	20070528
 %define		_rel		0.%{_cvsdate}.1
 Summary:	aufs - Another Unionfs
 Summary(pl.UTF-8):	aufs (Another Unionfs) - inny unionfs
@@ -20,7 +20,7 @@ Release:	%{_rel}
 License:	GPL v2
 Group:		Base/Kernel
 Source0:	%{name}-%{_cvsdate}.tar.bz2
-# Source0-md5:	526264eaac467144032e66a680fa03bf
+# Source0-md5:	38736bd2d7b329d8ee99f8f4b6f03aa1
 Patch0:		%{name}-vserver.patch
 URL:		http://aufs.sourceforge.net/
 %if %{with kernel}
@@ -98,8 +98,20 @@ cp -a include/linux fs/aufs
 	"
 %endif
 
+%if %{with userspace}
+%{__make} -C util \
+	CC="%{__cc}" \
+	CFLAGS="%{rpmcflags} -DCONFIG_AUFS_BRANCH_MAX_127"
+%endif
+
 %install
 rm -rf $RPM_BUILD_ROOT
+
+%if %{with userspace}
+install -d $RPM_BUILD_ROOT{%{_mandir}/man5,%{_sbindir}}
+install util/{mount.aufs,umount.aufs,auplink,aulchown} $RPM_BUILD_ROOT%{_sbindir}
+install util/aufs.5 $RPM_BUILD_ROOT%{_mandir}/man5/
+%endif
 
 %if %{with kernel}
 %install_kernel_modules -m fs/aufs/aufs -d kernel/fs/aufs
@@ -125,4 +137,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc README History
+%attr(755,root,root) %{_sbindir}/*
+%{_mandir}/man5/*
 %endif
