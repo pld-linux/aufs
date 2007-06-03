@@ -24,7 +24,7 @@ Source0:	%{name}-%{_cvsdate}.tar.bz2
 Patch0:		%{name}-vserver.patch
 URL:		http://aufs.sourceforge.net/
 %if %{with kernel}
-%{?with_dist_kernel:BuildRequires:	kernel%{_alt_kernel}-module-build >= 3:2.6.14}
+%{?with_dist_kernel:BuildRequires:	kernel%{_alt_kernel}-module-build >= 3:2.6.20.2}
 BuildRequires:	rpmbuild(macros) >= 1.379
 %endif
 BuildRequires:	sed >= 4.0
