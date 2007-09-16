@@ -10,7 +10,7 @@
 %undefine	with_dist_kernel
 %endif
 
-%define		_cvsdate	20070528
+%define		_cvsdate	20070914
 %define		_rel		0.%{_cvsdate}.1
 Summary:	aufs - Another Unionfs
 Summary(pl.UTF-8):	aufs (Another Unionfs) - inny unionfs
@@ -20,7 +20,7 @@ Release:	%{_rel}
 License:	GPL v2
 Group:		Base/Kernel
 Source0:	%{name}-%{_cvsdate}.tar.bz2
-# Source0-md5:	38736bd2d7b329d8ee99f8f4b6f03aa1
+# Source0-md5:	e40a80a7b93af168cae7f5b3499531e3
 Patch0:		%{name}-vserver.patch
 URL:		http://aufs.sourceforge.net/
 %if %{with kernel}
