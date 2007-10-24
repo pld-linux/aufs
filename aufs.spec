@@ -11,7 +11,7 @@
 %endif
 
 %define		_cvsdate	20071017
-%define		_rel		0.%{_cvsdate}.2
+%define		_rel		0.%{_cvsdate}.3
 Summary:	aufs - Another Unionfs
 Summary(pl.UTF-8):	aufs (Another Unionfs) - inny unionfs
 Name:		aufs
