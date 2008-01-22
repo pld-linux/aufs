@@ -10,16 +10,18 @@
 %undefine	with_dist_kernel
 %endif
 
-%define		_cvsdate	20071017
-%define		_rel		0.%{_cvsdate}.7
+%define		subver		20071017
+%define		prel		0.%{subver}.%{rel}
+
+%define		rel		8
 Summary:	aufs - Another Unionfs
 Summary(pl.UTF-8):	aufs (Another Unionfs) - inny unionfs
 Name:		aufs
 Version:	0
-Release:	%{_rel}
+Release:	%{prel}
 License:	GPL v2
 Group:		Base/Kernel
-Source0:	%{name}-%{_cvsdate}.tar.bz2
+Source0:	%{name}-%{subver}.tar.bz2
 # Source0-md5:	dee001829acbf3a4fa857a752527b385
 Patch0:		%{name}-vserver.patch
 URL:		http://aufs.sourceforge.net/
@@ -51,7 +53,7 @@ aufs-a. Część terminologii wywodzi się z unionfs-a.
 %package -n kernel%{_alt_kernel}-fs-aufs
 Summary:	Linux driver for aufs
 Summary(pl.UTF-8):	Sterownik dla Linuksa do aufs
-Release:	%{_rel}@%{_kernel_ver_str}
+Release:	%{prel}@%{_kernel_ver_str}
 Group:		Base/Kernel
 Requires(post,postun):	/sbin/depmod
 %if %{with dist_kernel}
