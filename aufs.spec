@@ -13,7 +13,7 @@
 %define		subver		20071017
 %define		prel		0.%{subver}.%{rel}
 
-%define		rel		9
+%define		rel		10
 Summary:	aufs - Another Unionfs
 Summary(pl.UTF-8):	aufs (Another Unionfs) - inny unionfs
 Name:		aufs
