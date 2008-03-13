@@ -10,7 +10,7 @@
 %undefine	with_dist_kernel
 %endif
 
-%define		subver		20071017
+%define		subver		20080313
 %define		prel		0.%{subver}.%{rel}
 
 %define		rel		10
@@ -22,8 +22,9 @@ Release:	%{prel}
 License:	GPL v2
 Group:		Base/Kernel
 Source0:	%{name}-%{subver}.tar.bz2
-# Source0-md5:	dee001829acbf3a4fa857a752527b385
+# Source0-md5:	044ba36a61ca6a0ebe72108aaa77b816
 Patch0:		%{name}-vserver.patch
+Patch1:		%{name}-disable-security_inode_permission.patch
 URL:		http://aufs.sourceforge.net/
 %if %{with kernel}
 %{?with_dist_kernel:BuildRequires:	kernel%{_alt_kernel}-module-build >= 3:2.6.20.2}
@@ -76,6 +77,7 @@ Ten pakiet zawiera moduł jądra Linuksa.
 %if %{with vserver}
 %patch0 -p1
 %endif
+%patch1 -p1
 
 sed '
 	s/$(CONFIG_AUFS)/m/; 
@@ -95,9 +97,9 @@ cp -a include/linux fs/aufs
 		-DCONFIG_AUFS_FAKE_DM \
 		-DCONFIG_AUFS_MODULE \
 		-UCONFIG_AUFS_KSIZE_PATCH \
+		-UCONFIG_AUFS_DLGT \
 		%{?debug:-DCONFIG_AUFS_DEBUG} \
-		%{?with_vserver:-DVSERVER} \
-	"
+		%{?with_vserver:-DVSERVER}"
 %endif
 
 %if %{with userspace}
