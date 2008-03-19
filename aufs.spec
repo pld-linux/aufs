@@ -4,7 +4,6 @@
 %bcond_without	kernel		# don't build kernel modules
 %bcond_without	userspace	# don't build userspace programs
 %bcond_with	verbose		# verbose build (V=1)
-%bcond_without	vserver		# kernel build without vserver & grsecurity
 
 %if %{without kernel}
 %undefine	with_dist_kernel
@@ -74,9 +73,7 @@ Ten pakiet zawiera moduł jądra Linuksa.
 
 %prep
 %setup -qn %{name}
-%if %{with vserver}
 %patch0 -p1
-%endif
 %patch1 -p1
 
 sed '
@@ -90,6 +87,9 @@ cp -a include/linux fs/aufs
 
 %build
 %if %{with kernel}
+if [ -f %{_kernelsrcdir}/include/linux/vs_base.h ]; then
+	isvserver="-DVSERVER"
+fi
 %build_kernel_modules -C fs/aufs -m aufs \
 	EXTRA_CFLAGS=" \
 		-DCONFIG_AUFS_BRANCH_MAX_127 \
@@ -99,7 +99,7 @@ cp -a include/linux fs/aufs
 		-UCONFIG_AUFS_KSIZE_PATCH \
 		-UCONFIG_AUFS_DLGT \
 		%{?debug:-DCONFIG_AUFS_DEBUG} \
-		%{?with_vserver:-DVSERVER}"
+		$isvserver"
 %endif
 
 %if %{with userspace}
