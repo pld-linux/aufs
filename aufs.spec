@@ -9,7 +9,7 @@
 %undefine	with_dist_kernel
 %endif
 
-%define		subver		20080509
+%define		subver		20080517
 %define		prel		0.%{subver}.%{rel}
 
 %define		rel		1
@@ -21,7 +21,7 @@ Release:	%{prel}
 License:	GPL v2
 Group:		Base/Kernel
 Source0:	%{name}-%{subver}.tar.bz2
-# Source0-md5:	fc14326444c0c9fb74e204152b6aae3a
+# Source0-md5:	61a932836cdb0f34e9aed6a6a6697547
 Patch0:		%{name}-vserver.patch
 URL:		http://aufs.sourceforge.net/
 %if %{with kernel}
