@@ -1,0 +1,11 @@
+--- aufs/fs/aufs25/vfsub.h~	2008-05-26 23:48:46.000000000 +0200
++++ aufs/fs/aufs25/vfsub.h	2008-05-26 23:51:50.260679424 +0200
+@@ -181,7 +181,7 @@
+ }
+ #endif
+ 
+-#ifdef CONFIG_AUFS_BR_XFS
++#ifndef CONFIG_AUFS_BR_XFS
+ /* br_xfs.c */
+ dev_t au_h_rdev(struct inode *h_inode, struct vfsmount *h_mnt,
+ 		struct dentry *h_dentry);
