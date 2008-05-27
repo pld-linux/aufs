@@ -1,4 +1,7 @@
 #
+# TODO:
+# - define CONFIG_ option directly
+#
 # Conditional build:
 %bcond_without	dist_kernel	# allow non-distribution kernel
 %bcond_without	kernel		# don't build kernel modules
@@ -9,7 +12,7 @@
 %undefine	with_dist_kernel
 %endif
 
-%define		subver		20080517
+%define		subver		20080527
 %define		prel		0.%{subver}.%{rel}
 
 %define		rel		1
@@ -23,6 +26,9 @@ Group:		Base/Kernel
 Source0:	%{name}-%{subver}.tar.bz2
 # Source0-md5:	61a932836cdb0f34e9aed6a6a6697547
 Patch0:		%{name}-vserver.patch
+Patch1:		%{name}-disable-security_inode_permission.patch
+Patch2:		%{name}-fixes.patch
+Patch3:		%{name}-spin_lock.patch
 URL:		http://aufs.sourceforge.net/
 %if %{with kernel}
 %{?with_dist_kernel:BuildRequires:	kernel%{_alt_kernel}-module-build >= 3:2.6.25.2}
@@ -73,6 +79,9 @@ Ten pakiet zawiera moduł jądra Linuksa.
 %prep
 %setup -qn %{name}
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 sed '
 	s/$(CONFIG_AUFS)/m/; 
@@ -81,15 +90,16 @@ sed '
 	s/$(CONFIG_AUFS_EXPORT)/y/;
 	s/$(CONFIG_AUFS_SYSAUFS)/n/
 ' -i fs/aufs/Makefile
-cp -a include/linux fs/aufs
+cp -a include/linux fs/aufs25
 
 %build
 %if %{with kernel}
 if [ -f %{_kernelsrcdir}/include/linux/vs_base.h ]; then
 	isvserver="-DVSERVER"
 fi
-%build_kernel_modules -C fs/aufs -m aufs \
-	EXTRA_CFLAGS=" \
+export CONFIG_AUFS_BR_XFS=y
+%build_kernel_modules -C fs/aufs25 -m aufs \
+	EXTRA_CFLAGS+=" \
 		-DCONFIG_AUFS_BRANCH_MAX_127 \
 		-DCONFIG_AUFS_BRANCH_MAX_CHAR \
 		-DCONFIG_AUFS_FAKE_DM \
@@ -116,7 +126,7 @@ install util/aufs.5 $RPM_BUILD_ROOT%{_mandir}/man5/
 %endif
 
 %if %{with kernel}
-%install_kernel_modules -m fs/aufs/aufs -d kernel/fs/aufs
+%install_kernel_modules -m fs/aufs25/aufs -d kernel/fs/aufs
 %endif
 
 %clean
