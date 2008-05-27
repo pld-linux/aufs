@@ -1,11 +1,11 @@
---- aufs/fs/aufs/i_op.c~	2008-02-25 00:47:13.000000000 +0100
-+++ aufs/fs/aufs/i_op.c	2008-03-14 00:09:00.950713202 +0100
+--- aufs/fs/aufs25/i_op.c~	2008-02-25 00:47:13.000000000 +0100
++++ aufs/fs/aufs25/i_op.c	2008-03-14 00:09:00.950713202 +0100
 @@ -70,7 +70,7 @@ static int h_permission(struct inode *h_
  		AuTraceErr(err);
  	}
  
--#if 1
-+#if 0
- 	if (!err) {
- #ifndef CONFIG_AUFS_DLGT
- 		err = security_inode_permission(h_inode, mask, fake_nd);
+-#if 1 /* todo: export? */
++#if 0 /* todo: export? */
+ 	if (!err)
+ 		err = security_inode_permission(h_inode, mask, fake_nd,
+ 						dlgt);
