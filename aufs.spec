@@ -24,7 +24,7 @@ Release:	%{prel}
 License:	GPL v2
 Group:		Base/Kernel
 Source0:	%{name}-%{subver}.tar.bz2
-# Source0-md5:	61a932836cdb0f34e9aed6a6a6697547
+# Source0-md5:	aeb6880930a8abcb60947e96b310d3df
 Patch0:		%{name}-vserver.patch
 Patch1:		%{name}-disable-security_inode_permission.patch
 Patch2:		%{name}-fixes.patch
