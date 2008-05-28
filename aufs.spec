@@ -83,6 +83,7 @@ Ten pakiet zawiera moduł jądra Linuksa.
 %patch2 -p1
 %patch3 -p1
 
+# we should make it better
 sed '
 	s/$(CONFIG_AUFS)/m/; 
 	%{!?debug:s/$(CONFIG_AUFS_DEBUG.*)/n/}; 
@@ -97,6 +98,7 @@ cp -a include/linux fs/aufs25
 if [ -f %{_kernelsrcdir}/include/linux/vs_base.h ]; then
 	isvserver="-DVSERVER"
 fi
+export CONFIG_AUFS=m
 export CONFIG_AUFS_BR_XFS=y
 %build_kernel_modules -C fs/aufs25 -m aufs \
 	EXTRA_CFLAGS+=" \
