@@ -12,23 +12,28 @@
 %undefine	with_dist_kernel
 %endif
 
+%if "%{_alt_kernel}" != "%{nil}"
+%undefine	with_userspace
+%endif
+
 %define		subver		20080527
 %define		prel		0.%{subver}.%{rel}
 
+%define		pname		aufs
 %define		rel		10
 Summary:	aufs - Another Unionfs
 Summary(pl.UTF-8):	aufs (Another Unionfs) - inny unionfs
-Name:		aufs
+Name:		%{pname}%{_alt_kernel}
 Version:	0
 Release:	%{prel}
 License:	GPL v2
 Group:		Base/Kernel
-Source0:	%{name}-%{subver}.tar.bz2
+Source0:	%{pname}-%{subver}.tar.bz2
 # Source0-md5:	aeb6880930a8abcb60947e96b310d3df
-Patch0:		%{name}-vserver.patch
-Patch1:		%{name}-disable-security_inode_permission.patch
-Patch2:		%{name}-fixes.patch
-Patch3:		%{name}-spin_lock.patch
+Patch0:		%{pname}-vserver.patch
+Patch1:		%{pname}-disable-security_inode_permission.patch
+Patch2:		%{pname}-fixes.patch
+Patch3:		%{pname}-spin_lock.patch
 URL:		http://aufs.sourceforge.net/
 %if %{with kernel}
 %{?with_dist_kernel:BuildRequires:	kernel%{_alt_kernel}-module-build >= 3:2.6.25.2}
@@ -77,7 +82,7 @@ Sterownik dla Linuksa do aufs.
 Ten pakiet zawiera moduł jądra Linuksa.
 
 %prep
-%setup -qn %{name}
+%setup -qn %{pname}
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
