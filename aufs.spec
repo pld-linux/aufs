@@ -16,11 +16,11 @@
 %undefine	with_userspace
 %endif
 
-%define		subver		20080527
+%define		subver		20081030
 %define		prel		0.%{subver}.%{rel}
 
 %define		pname		aufs
-%define		rel		11
+%define		rel		0.1
 Summary:	aufs - Another Unionfs
 Summary(pl.UTF-8):	aufs (Another Unionfs) - inny unionfs
 Name:		%{pname}%{_alt_kernel}
@@ -29,11 +29,11 @@ Release:	%{prel}
 License:	GPL v2
 Group:		Base/Kernel
 Source0:	%{pname}-%{subver}.tar.bz2
-# Source0-md5:	aeb6880930a8abcb60947e96b310d3df
+# Source0-md5:	13ea25a28c5a3ed4480c1bd7f26655df
 Patch0:		%{pname}-vserver.patch
-Patch1:		%{pname}-disable-security_inode_permission.patch
+#Patch1:		%{pname}-disable-security_inode_permission.patch
 Patch2:		%{pname}-fixes.patch
-Patch3:		%{pname}-spin_lock.patch
+#Patch3:		%{pname}-spin_lock.patch
 URL:		http://aufs.sourceforge.net/
 %if %{with kernel}
 %{?with_dist_kernel:BuildRequires:	kernel%{_alt_kernel}-module-build >= 3:2.6.25.2}
@@ -84,9 +84,9 @@ Ten pakiet zawiera moduł jądra Linuksa.
 %prep
 %setup -qn %{pname}
 %patch0 -p1
-%patch1 -p1
+#%patch1 -p1
 %patch2 -p1
-%patch3 -p1
+#%patch3 -p1
 
 # we should make it better
 sed '
