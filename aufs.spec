@@ -88,14 +88,6 @@ Ten pakiet zawiera moduł jądra Linuksa.
 %patch2 -p1
 #%patch3 -p1
 
-# we should make it better
-sed '
-	s/$(CONFIG_AUFS)/m/; 
-	%{!?debug:s/$(CONFIG_AUFS_DEBUG.*)/n/}; 
-	s/$(CONFIG_AUFS_HINOTIFY)/n/;
-	s/$(CONFIG_AUFS_EXPORT)/y/;
-	s/$(CONFIG_AUFS_SYSAUFS)/n/
-' -i fs/aufs/Makefile
 cp -a include/linux fs/aufs25
 
 %build
@@ -103,6 +95,10 @@ cp -a include/linux fs/aufs25
 if [ -f %{_kernelsrcdir}/include/linux/vs_base.h ]; then
 	isvserver="-DVSERVER"
 fi
+%ifarch %{x8664} ia64 ppc64 sparc64
+	ino_t64="-DCONFIG_AUFS_INO_T_64"
+%endif
+
 export CONFIG_AUFS=m
 export CONFIG_AUFS_BR_XFS=y
 %build_kernel_modules -C fs/aufs25 -m aufs \
@@ -114,7 +110,8 @@ export CONFIG_AUFS_BR_XFS=y
 		-UCONFIG_AUFS_KSIZE_PATCH \
 		-UCONFIG_AUFS_DLGT \
 		%{?debug:-DCONFIG_AUFS_DEBUG} \
-		$isvserver"
+		$isvserver \
+		$ino_t64"
 %endif
 
 %if %{with userspace}
