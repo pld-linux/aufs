@@ -34,6 +34,7 @@ Patch0:		%{pname}-vserver.patch
 #Patch1:		%{pname}-disable-security_inode_permission.patch
 Patch2:		%{pname}-fixes.patch
 #Patch3:		%{pname}-spin_lock.patch
+Patch4:		%{pname}-apparmor.patch
 URL:		http://aufs.sourceforge.net/
 %if %{with kernel}
 %{?with_dist_kernel:BuildRequires:	kernel%{_alt_kernel}-module-build >= 3:2.6.25.2}
@@ -87,12 +88,16 @@ Ten pakiet zawiera moduł jądra Linuksa.
 #%patch1 -p1
 %patch2 -p1
 #%patch3 -p1
+if [ -d %{_kernelsrcdir}/security/apparmor ]; then
+%patch4 -p1
+fi
 
 cp -a include/linux fs/aufs25
 
 %build
 %if %{with kernel}
-if [ -f %{_kernelsrcdir}/include/linux/vs_base.h ]; then
+if [ -f %{_kernelsrcdir}/include/linux/vs_base.h &&
+     ! -d %{_kernelsrcdir}/security/apparmor ]; then
 	isvserver="-DVSERVER"
 fi
 %ifarch %{x8664} ia64 ppc64 sparc64
