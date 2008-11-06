@@ -16,11 +16,11 @@
 %undefine	with_userspace
 %endif
 
-%define		subver		20081030
+%define		subver		20081106
 %define		prel		0.%{subver}.%{rel}
 
 %define		pname		aufs
-%define		rel		1
+%define		rel		0.1
 Summary:	aufs - Another Unionfs
 Summary(pl.UTF-8):	aufs (Another Unionfs) - inny unionfs
 Name:		%{pname}%{_alt_kernel}
@@ -29,7 +29,7 @@ Release:	%{prel}
 License:	GPL v2
 Group:		Base/Kernel
 Source0:	%{pname}-%{subver}.tar.bz2
-# Source0-md5:	13ea25a28c5a3ed4480c1bd7f26655df
+# Source0-md5:	9a0d8cdeae8706d51f7912b42f7dd438
 Patch0:		%{pname}-vserver.patch
 #Patch1:		%{pname}-disable-security_inode_permission.patch
 Patch2:		%{pname}-fixes.patch
