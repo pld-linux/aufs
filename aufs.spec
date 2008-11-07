@@ -20,7 +20,7 @@
 %define		prel		0.%{subver}.%{rel}
 
 %define		pname		aufs
-%define		rel		0.1
+%define		rel		1
 Summary:	aufs - Another Unionfs
 Summary(pl.UTF-8):	aufs (Another Unionfs) - inny unionfs
 Name:		%{pname}%{_alt_kernel}
@@ -114,6 +114,11 @@ export CONFIG_AUFS_BR_XFS=y
 		-DCONFIG_AUFS_MODULE \
 		-UCONFIG_AUFS_KSIZE_PATCH \
 		-UCONFIG_AUFS_DLGT \
+%if "%{_alt_kernel}" != "vanilla"
+		-DCONFIG_AUFS_UNIONFS23_PATCH \
+		-DCONFIG_AUFS_UNIONFS22_PATCH \
+		-DCONFIG_AUFS_SPLICE_PATCH \
+%endif
 		%{?debug:-DCONFIG_AUFS_DEBUG} \
 		$isvserver \
 		$ino_t64"
