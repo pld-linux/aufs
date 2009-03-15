@@ -16,11 +16,11 @@
 %undefine	with_userspace
 %endif
 
-%define		subver		20081106
+%define		subver		20090315
 %define		prel		0.%{subver}.%{rel}
 
 %define		pname		aufs
-%define		rel		15
+%define		rel		1
 Summary:	aufs - Another Unionfs
 Summary(pl.UTF-8):	aufs (Another Unionfs) - inny unionfs
 Name:		%{pname}%{_alt_kernel}
@@ -29,12 +29,13 @@ Release:	%{prel}
 License:	GPL v2
 Group:		Base/Kernel
 Source0:	%{pname}-%{subver}.tar.bz2
-# Source0-md5:	9a0d8cdeae8706d51f7912b42f7dd438
+# Source0-md5:	f2cb8c2dcf40ed076b1fcdcb1e91412e
 Patch0:		%{pname}-vserver.patch
 #Patch1:		%{pname}-disable-security_inode_permission.patch
 Patch2:		%{pname}-fixes.patch
 #Patch3:		%{pname}-spin_lock.patch
 Patch4:		%{pname}-apparmor.patch
+Patch5:		%{pname}-br-xfs-fix.patch
 URL:		http://aufs.sourceforge.net/
 %if %{with kernel}
 %{?with_dist_kernel:BuildRequires:	kernel%{_alt_kernel}-module-build >= 3:2.6.25.2}
@@ -91,6 +92,7 @@ Ten pakiet zawiera moduł jądra Linuksa.
 if [ -d %{_kernelsrcdir}/security/apparmor ]; then
 %patch4 -p1
 fi
+%patch5 -p1
 
 cp -a include/linux fs/aufs25
 
@@ -162,7 +164,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with userspace}
 %files
 %defattr(644,root,root,755)
-%doc README History
+%doc README.aufs1 README.aufs2 History
 %attr(755,root,root) %{_sbindir}/*
 %{_mandir}/man5/*
 %endif
