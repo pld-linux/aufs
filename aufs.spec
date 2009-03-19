@@ -94,9 +94,9 @@ if [ -d %{_kernelsrcdir}/security/apparmor ]; then
 %patch4 -p1
 fi
 %patch5 -p1
-%if "%{_alt_kernel}" != "%{nil}"
+if [ -d %{_kernelsrcdir}/fs/unionfs ]; then
 %patch6 -p0
-%endif
+fi
 
 cp -a include/linux fs/aufs25
 
