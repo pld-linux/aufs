@@ -36,6 +36,7 @@ Patch2:		%{pname}-fixes.patch
 #Patch3:		%{pname}-spin_lock.patch
 Patch4:		%{pname}-apparmor.patch
 Patch5:		%{pname}-br-xfs-fix.patch
+Patch6:		%{pname}-vfsub.c.patch
 URL:		http://aufs.sourceforge.net/
 %if %{with kernel}
 %{?with_dist_kernel:BuildRequires:	kernel%{_alt_kernel}-module-build >= 3:2.6.25.2}
@@ -93,6 +94,9 @@ if [ -d %{_kernelsrcdir}/security/apparmor ]; then
 %patch4 -p1
 fi
 %patch5 -p1
+%if "%{_alt_kernel}" != "%{nil}"
+%patch6 -p0
+%endif
 
 cp -a include/linux fs/aufs25
 
