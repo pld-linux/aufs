@@ -1,0 +1,20 @@
+--- fs/aufs25/vfsub.c	2008-10-20 03:47:16.000000000 +0200
++++ fs/aufs25/vfsub.c.new	2009-03-19 11:30:57.000000000 +0100
+@@ -354,7 +354,7 @@
+ 		  AuDLNPair(in->f_dentry), *ppos, (unsigned long)len, flags);
+ 
+ 	lockdep_off();
+-	err = vfs_splice_to(in, ppos, pipe, len, flags);
++	err = 0;
+ 	lockdep_on();
+ 	if (err >= 0)
+ 		au_update_fuse_h_inode(in->f_vfsmnt, in->f_dentry); /*ignore*/
+@@ -370,7 +370,7 @@
+ 		  AuDLNPair(out->f_dentry), *ppos, (unsigned long)len, flags);
+ 
+ 	lockdep_off();
+-	err = vfs_splice_from(pipe, out, ppos, len, flags);
++	err = 0;
+ 	lockdep_on();
+ 	if (err >= 0)
+ 		au_update_fuse_h_inode(out->f_vfsmnt, out->f_dentry); /*ignore*/
