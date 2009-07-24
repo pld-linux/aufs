@@ -9,3 +9,85 @@
  /* br_xfs.c */
  dev_t au_h_rdev(struct inode *h_inode, struct vfsmount *h_mnt,
  		struct dentry *h_dentry);
+--- aufs/fs/aufs25/xino.c~	2009-01-26 07:24:24.000000000 +0100
++++ aufs/fs/aufs25/xino.c	2009-07-22 18:12:16.356983962 +0200
+@@ -621,7 +621,11 @@
+ 		goto out_dput;
+ 	}
+ 	file = dentry_open(dget(dentry), mntget(base_file->f_vfsmnt),
+-			   O_RDWR | O_CREAT | O_EXCL | O_LARGEFILE);
++			   O_RDWR | O_CREAT | O_EXCL | O_LARGEFILE
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 29)
++				, current_cred()
++#endif
++			   );
+ 	if (IS_ERR(file)) {
+ 		AuErr("%.*s open err %ld\n", AuLNPair(name), PTR_ERR(file));
+ 		goto out_dput;
+
+--- aufs/fs/aufs25/whout.c~	2009-01-26 07:24:19.000000000 +0100
++++ aufs/fs/aufs25/whout.c	2009-07-24 12:13:57.149063895 +0200
+@@ -276,7 +276,13 @@
+ 	 */
+ 	vfsub_args_init(&vargs, &ign, dlgt,
+ 			(h_dir->i_mode & S_ISVTX)
+-			&& wh_dentry->d_inode->i_uid != current->fsuid);
++			&& wh_dentry->d_inode->i_uid != 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 29)
++			current_fsuid()
++#else
++			current->fsuid
++#endif
++			);
+ 	vfsub_ign_hinode(&vargs, IN_DELETE, hdir);
+ 	err = vfsub_unlink(h_dir, wh_dentry, &vargs);
+ 	AuTraceErr(err);
+@@ -625,7 +631,13 @@
+ 	struct vfsub_args vargs;
+ 
+ 	AuTraceEnter();
+-	AuDebugOn(current->fsuid);
++	AuDebugOn(
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 29)
++			current_fsuid()
++#else
++			current->fsuid
++#endif
++			);
+ 
+ 	err = 0;
+ 	wbr = a->br->br_wbr;
+
+--- aufs/fs/aufs25/file.c~	2009-01-26 07:24:29.000000000 +0100
++++ aufs/fs/aufs25/file.c	2009-07-24 12:16:59.015712355 +0200
+@@ -99,7 +99,11 @@
+ 	if (file && au_test_nfs(h_dentry->d_sb))
+ 		h_file = au_h_intent(dentry, bindex, file);
+ 	if (!h_file)
+-		h_file = dentry_open(dget(h_dentry), mntget(br->br_mnt), flags);
++		h_file = dentry_open(dget(h_dentry), mntget(br->br_mnt), flags
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 29)
++				,current_cred()
++#endif
++				);
+ 
+ 	/*
+ 	 * a dirty trick for handling FMODE_EXEC and deny_write_access().
+
+--- aufs/fs/aufs25/inode.c~	2009-01-26 07:24:45.000000000 +0100
++++ aufs/fs/aufs25/inode.c	2009-07-24 12:19:05.229033182 +0200
+@@ -405,7 +405,13 @@
+ 
+ int au_test_h_perm(struct inode *h_inode, int mask, int dlgt)
+ {
+-	if (!current->fsuid)
++	if (!
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 29)
++			current_fsuid()
++#else
++			current->fsuid
++#endif
++			)
+ 		return 0;
+ 	/* todo: fake nameidata? */
+ 	return vfsub_permission(h_inode, mask, NULL, dlgt);

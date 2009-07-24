@@ -90,12 +90,18 @@ Ten pakiet zawiera moduł jądra Linuksa.
 #%patch1 -p1
 %patch2 -p1
 #%patch3 -p1
+%if "%{_kernel_ver}" < "2.6.30"
 if [ -d %{_kernelsrcdir}/security/apparmor ]; then
 %patch4 -p1
 fi
+%endif
 %patch5 -p1
 if [ -d %{_kernelsrcdir}/fs/unionfs ]; then
 %patch6 -p0
+%if "%{_kernel_ver}" >= "2.6.30"
+else
+%patch6 -p0
+%endif
 fi
 
 cp -a include/linux fs/aufs25
