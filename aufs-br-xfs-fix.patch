@@ -9,3 +9,18 @@
  /* br_xfs.c */
  dev_t au_h_rdev(struct inode *h_inode, struct vfsmount *h_mnt,
  		struct dentry *h_dentry);
+--- aufs/fs/aufs25/br_xfs.c.orig	2009-08-06 14:40:11.000000000 +0200
++++ aufs/fs/aufs25/br_xfs.c	2009-08-06 14:39:08.000000000 +0200
+@@ -24,6 +24,7 @@
+ 
+ #include "aufs.h"
+ 
++#ifdef CONFIG_AUFS_BR_XFS
+ /* h_mnt can be NULL, is it safe? */
+ dev_t au_h_rdev(struct inode *h_inode, struct vfsmount *h_mnt,
+ 		struct dentry *h_dentry)
+@@ -67,3 +68,4 @@
+  out:
+ 	return rdev;
+ }
++#endif
