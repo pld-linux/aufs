@@ -20,7 +20,7 @@
 %define		prel		0.%{subver}.%{rel}
 
 %define		pname		aufs
-%define		rel		2
+%define		rel		3
 Summary:	aufs - Another Unionfs
 Summary(pl.UTF-8):	aufs (Another Unionfs) - inny unionfs
 Name:		%{pname}%{_alt_kernel}
