@@ -87,9 +87,9 @@ Ten pakiet zawiera moduł jądra Linuksa.
 %prep
 %setup -qn %{pname}
 %patch -P0 -p1
-#%patch1 -p1
+#%%patch1 -p1
 %patch -P2 -p1
-#%patch3 -p1
+#%%patch3 -p1
 %if "%{_kernel_ver}" < "2.6.30"
 if [ -d %{_kernelsrcdir}/security/apparmor ]; then
 %patch -P4 -p1
